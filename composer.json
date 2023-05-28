@@ -1,0 +1,20 @@
+{
+    "name": "sokmean-mptc/ams-fm",
+    "description": "AMS FM Wordpress plugin",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "sokmean-mptc",
+            "email": "ngonsokmean@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0|8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AMS\\FM\\": "inc/"
+        }
+    }
+}

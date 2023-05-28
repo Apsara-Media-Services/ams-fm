@@ -1,0 +1,27 @@
+body,
+html {
+    background-color: #f0f0f1;
+}
+
+#wpcontent {
+    background-color: #f0f0f1;
+    .main-menu {
+        margin-left: -18px;
+        margin-bottom: 30px;
+    }
+    input[type="date"],
+    input[type="datetime-local"],
+    input[type="datetime"],
+    input[type="email"],
+    input[type="month"],
+    input[type="number"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="text"],
+    input[type="time"],
+    input[type="url"],
+    input[type="week"] {
+        border: initial;
+    }
+}

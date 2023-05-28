@@ -1,0 +1,32 @@
+/*!********************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/style/main.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************/
+body,
+html {
+  background-color: #f0f0f1;
+}
+
+#wpcontent {
+  background-color: #f0f0f1;
+}
+#wpcontent .main-menu {
+  margin-left: -18px;
+  margin-bottom: 30px;
+}
+#wpcontent input[type=date],
+#wpcontent input[type=datetime-local],
+#wpcontent input[type=datetime],
+#wpcontent input[type=email],
+#wpcontent input[type=month],
+#wpcontent input[type=number],
+#wpcontent input[type=password],
+#wpcontent input[type=search],
+#wpcontent input[type=tel],
+#wpcontent input[type=text],
+#wpcontent input[type=time],
+#wpcontent input[type=url],
+#wpcontent input[type=week] {
+  border: initial;
+}
+
+/*# sourceMappingURL=index.css.map*/
