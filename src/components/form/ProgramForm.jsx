@@ -20,7 +20,13 @@ import {
     Image,
     Divider,
     Modal,
+    TreeSelect,
 } from "antd";
+
+/**
+ * External dependencies
+ */
+import { formatTimeRange } from "../../utils";
 
 const ALLOWED_MEDIA_TYPES = ["image"];
 const { RangePicker } = TimePicker;
@@ -110,24 +116,26 @@ const MediaLibrary = ({ value = [], onChange }) => {
     );
 };
 
-const ProgramForm = ({
-    initialValue,
-    onFieldsChange,
-    onFinish,
-    formatTimeRage,
-}) => {
+const ProgramForm = ({ initialValue, onFieldsChange, onFinish }) => {
     const [openModal, setOpenModal] = useState(false);
 
     return (
         <Form.Provider
             onFormFinish={(name, { values, forms }) => {
                 if (name === "importForm") {
-                    const { resourcesProvider } = forms;
-                    const { resources } = eval(values);
-                    resourcesProvider.setFieldsValue({
-                        resources: formatTimeRage([...JSON.parse(resources)]),
-                    });
-                    setOpenModal(false);
+                    try {
+                        const { resourcesProvider } = forms;
+                        const { resources } = eval(values);
+                        const arrObj = JSON.parse(resources);
+                        if (Array.isArray(arrObj)) {
+                            resourcesProvider.setFieldsValue({
+                                resources: formatTimeRange(arrObj),
+                            });
+                            setOpenModal(false);
+                        }
+                    } catch (e) {
+                        // console.log(e);
+                    }
                 }
             }}
         >
@@ -144,6 +152,13 @@ const ProgramForm = ({
                         <>
                             {fields.map(({ key, name, ...restField }) => (
                                 <Space key={key} style={{ display: "block" }}>
+                                    <Form.Item
+                                        label={"Select a category"}
+                                        {...restField}
+                                        name={[name, "category"]}
+                                    >
+                                        <TreeSelect />
+                                    </Form.Item>
                                     <Form.Item
                                         label="Title"
                                         {...restField}
@@ -165,17 +180,17 @@ const ProgramForm = ({
                                         <TextArea rows={4} />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Uri"
+                                        label="Slug"
                                         {...restField}
-                                        name={[name, "uri"]}
+                                        name={[name, "slug"]}
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Please input uri!",
+                                                message: "Please input slug!",
                                             },
                                         ]}
                                     >
-                                        <Input addonBefore="https://" />
+                                        <Input addonBefore="http://domain-name/" />
                                     </Form.Item>
                                     <Form.Item
                                         label="Time"

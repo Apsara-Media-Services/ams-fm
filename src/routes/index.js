@@ -16,6 +16,10 @@ const routes = [
         element: HomePage,
     },
     {
+        path: "/settings",
+        element: HomePage,
+    },
+    {
         path: "/day/monday",
         element: Monday,
     },

@@ -2,23 +2,21 @@
  * External dependencies
  */
 import { useState } from "react";
-import dayjs from "dayjs";
 import { __ } from "@wordpress/i18n";
-import { Col, Row } from "antd";
-import ReactJson from "react-json-view";
-
+import { compact } from "lodash";
+import apiFetch from "@wordpress/api-fetch";
 /**
  * Internal dependencies
  */
-import ProgramForm from "../../components/form/ProgramForm";
-import { compact } from "lodash";
+import { formatTimeRange } from "../../utils";
+import Page from "../../components/layout/Page";
+import { fetchCategories } from "../../data";
 
-const timeFormat = "HH:mm:ss";
-
+const category = await fetchCategories();
 const resources = [
     {
         title: "Hello Monday programs",
-        uri: "ams.com.kh/fm97",
+        slug: "uncategories",
         description: "Hello this is the radio program",
         time_range: ["06:00:00", "08:00:00"],
         cover: [
@@ -41,63 +39,42 @@ const resources = [
                 url: "http://wp.local/wp-content/uploads/2023/05/fm97-youth-logo.png",
             },
         ],
+        category: "",
     },
 ];
+console.log(category);
 const onFinishHandler = () => {
     return;
-    // console.log(formatTimeRage(resources, true));
-};
-
-const formatTimeRage = (data = [], reverse = false) => {
-    return data.map((item) => {
-        if (item.time_range) {
-            const time_range = item.time_range.map((i) => {
-                if (reverse) {
-                    return i.format(timeFormat);
-                } else {
-                    return dayjs(i, timeFormat);
-                }
-            });
-            return { ...item, time_range };
-        }
-    });
 };
 
 const Monday = () => {
-    const [src, setResources] = useState(formatTimeRage(resources));
-
+    console.log("test");
+    const [src, setResources] = useState(formatTimeRange(resources));
     const onFieldsChangeHandler = (e = []) => {
-        const entries = e[0];
-
-        if (entries.name.length === 1) {
-            setResources(compact(entries.value));
-        } else {
-            // console.log(entries);
-            const index = entries.name[1];
-            const key = entries.name[2];
-            setResources((prev) => {
-                prev[index] = { ...prev[index], [key]: entries.value };
-                return prev;
-            });
+        try {
+            const entries = e[0];
+            if (entries.name.length === 1) {
+                setResources(compact(entries.value));
+            } else {
+                const index = entries.name[1];
+                const key = entries.name[2];
+                setResources((prev) => {
+                    prev[index] = { ...prev[index], [key]: entries.value };
+                    return prev;
+                });
+            }
+        } catch (e) {
+            // console.log(e);
         }
     };
 
     return (
-        <Row>
-            <Col span={8}>
-                <>
-                    <ProgramForm
-                        formatTimeRage={formatTimeRage}
-                        onFinish={onFinishHandler}
-                        initialValue={src}
-                        onFieldsChange={onFieldsChangeHandler}
-                    />
-                </>
-            </Col>
-            <Col span={16}>
-                <ReactJson src={formatTimeRage(src, true)} />
-            </Col>
-        </Row>
+        <Page
+            onFinish={onFinishHandler}
+            initialValue={src}
+            onFieldsChange={onFieldsChangeHandler}
+            src={formatTimeRange(src, true)}
+        />
     );
 };
 

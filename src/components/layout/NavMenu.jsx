@@ -4,11 +4,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { __ } from "@wordpress/i18n";
-import {
-    EditOutlined,
-    CheckOutlined,
-    ExclamationOutlined,
-} from "@ant-design/icons";
+import { SettingOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 
 /**
@@ -19,37 +15,35 @@ const items = [
     {
         label: "Monday",
         key: "/day/monday",
-        icon: <EditOutlined />,
     },
     {
         label: "Tuesday",
         key: "/day/tuesday",
-        icon: <CheckOutlined />,
     },
     {
         label: "Wednesday",
         key: "/day/wednesday",
-        icon: <ExclamationOutlined />,
     },
     {
         label: "Thursday",
         key: "/day/thursday",
-        icon: <ExclamationOutlined />,
     },
     {
         label: "Friday",
         key: "/day/friday",
-        icon: <ExclamationOutlined />,
     },
     {
         label: "Saturday",
         key: "/day/saturday",
-        icon: <ExclamationOutlined />,
     },
     {
         label: "Sunday",
         key: "/day/sunday",
-        icon: <ExclamationOutlined />,
+    },
+    {
+        label: "Settings",
+        key: "/settings",
+        icon: <SettingOutlined />,
     },
 ];
 function NavMenu() {
