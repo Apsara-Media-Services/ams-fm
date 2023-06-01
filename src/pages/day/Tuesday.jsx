@@ -1,25 +1,52 @@
 /**
  * External dependencies
  */
-import { useState } from "react";
-import { __ } from "@wordpress/i18n";
-import { Col, Row } from "antd";
-import ReactJson from "react-json-view";
+import { useState, useEffect } from "react";
 import { compact } from "lodash";
+import apiFetch from "@wordpress/api-fetch";
+import { Skeleton, message, notification } from "antd";
 
 /**
  * Internal dependencies
  */
-import ProgramForm from "../../components/form/ProgramForm";
 import { formatTimeRange } from "../../utils";
-
-const resources = [];
-const onFinishHandler = () => {
-    return;
-};
+import Page from "../../components/layout/Page";
 
 const Tuesday = () => {
-    const [src, setResources] = useState(formatTimeRange(resources));
+    const [api, contextHolder] = notification.useNotification();
+    const [resources, setResources] = useState([]);
+    const [schedule, setSchedule] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    const openNotification = ({ message, description }) => {
+        api.open({
+            message,
+            description,
+        });
+    };
+
+    const onFinishHandler = async ({ resources }) => {
+        await apiFetch({
+            path: "/wp/v2/settings",
+            method: "POST",
+            parse: false,
+            data: {
+                ams_schedule: {
+                    ...schedule,
+                    tuesday: formatTimeRange(resources, true),
+                },
+            },
+        }).then((response) => {
+            // console.log(response, await response.json());
+            if (response.ok) {
+                openNotification({
+                    message: "Successful",
+                    description: "The records has been save successfuly.",
+                });
+            }
+        });
+    };
+
     const onFieldsChangeHandler = (e = []) => {
         try {
             const entries = e[0];
@@ -38,21 +65,34 @@ const Tuesday = () => {
         }
     };
 
+    const fetchData = async () => {
+        setLoading(true);
+        await apiFetch({
+            path: "/wp/v2/settings",
+        }).then((data) => {
+            setSchedule(data.ams_schedule);
+            setResources(formatTimeRange(data.ams_schedule.tuesday));
+            setLoading(false);
+        });
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
-        <Row>
-            <Col span={8}>
-                <>
-                    <ProgramForm
-                        onFinish={onFinishHandler}
-                        initialValue={src}
-                        onFieldsChange={onFieldsChangeHandler}
-                    />
-                </>
-            </Col>
-            <Col span={16}>
-                <ReactJson src={formatTimeRange(src, true)} />
-            </Col>
-        </Row>
+        <>
+            {contextHolder}
+            {loading && <Skeleton />}
+            {!loading && (
+                <Page
+                    onFinish={onFinishHandler}
+                    initialValue={resources}
+                    onFieldsChange={onFieldsChangeHandler}
+                    reactJson={formatTimeRange(resources, true)}
+                />
+            )}
+        </>
     );
 };
 

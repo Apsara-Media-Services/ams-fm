@@ -246,7 +246,7 @@ final class AMS_FM {
      */
     public function init_classes() {
         // Init necessary hooks
-        // new AMS\FM\User\Hooks();
+        new AMS\FM\User\RegisterSettings();
     }
 
     /**

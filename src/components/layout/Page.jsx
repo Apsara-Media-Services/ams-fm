@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from "@wordpress/i18n";
 import { Col, Row } from "antd";
 import ReactJson from "react-json-view";
 
@@ -10,7 +9,7 @@ import ReactJson from "react-json-view";
  */
 import ProgramForm from "../../components/form/ProgramForm";
 
-const Page = ({ onFinish, initialValue, onFieldsChange, src }) => {
+const Page = ({ onFinish, initialValue, onFieldsChange, reactJson }) => {
     return (
         <Row>
             <Col span={8}>
@@ -23,7 +22,7 @@ const Page = ({ onFinish, initialValue, onFieldsChange, src }) => {
                 </>
             </Col>
             <Col span={16}>
-                <ReactJson src={src} />
+                <ReactJson src={reactJson} />
             </Col>
         </Row>
     );

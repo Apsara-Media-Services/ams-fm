@@ -20,17 +20,20 @@ import {
     Image,
     Divider,
     Modal,
-    TreeSelect,
+    Cascader,
 } from "antd";
 
 /**
- * External dependencies
+ * Internal dependencies
  */
 import { formatTimeRange } from "../../utils";
+import { fetchCategories } from "../../data";
 
 const ALLOWED_MEDIA_TYPES = ["image"];
 const { RangePicker } = TimePicker;
 const { TextArea } = Input;
+
+const categories = await fetchCategories();
 
 // reset form fields when modal is form, closed
 const useResetFormOnCloseModal = ({ form, open }) => {
@@ -141,7 +144,7 @@ const ProgramForm = ({ initialValue, onFieldsChange, onFinish }) => {
         >
             <Form
                 onFinish={onFinish}
-                onFieldsChange={(e) => onFieldsChange(e)}
+                onFieldsChange={onFieldsChange}
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 16 }}
                 layout="horizontal"
@@ -153,11 +156,18 @@ const ProgramForm = ({ initialValue, onFieldsChange, onFinish }) => {
                             {fields.map(({ key, name, ...restField }) => (
                                 <Space key={key} style={{ display: "block" }}>
                                     <Form.Item
-                                        label={"Select a category"}
+                                        label={"Category"}
                                         {...restField}
-                                        name={[name, "category"]}
+                                        name={[name, "categories"]}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Please select category!",
+                                            },
+                                        ]}
                                     >
-                                        <TreeSelect />
+                                        <Cascader options={categories} />
                                     </Form.Item>
                                     <Form.Item
                                         label="Title"
@@ -178,19 +188,6 @@ const ProgramForm = ({ initialValue, onFieldsChange, onFinish }) => {
                                         name={[name, "description"]}
                                     >
                                         <TextArea rows={4} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="Slug"
-                                        {...restField}
-                                        name={[name, "slug"]}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Please input slug!",
-                                            },
-                                        ]}
-                                    >
-                                        <Input addonBefore="http://domain-name/" />
                                     </Form.Item>
                                     <Form.Item
                                         label="Time"

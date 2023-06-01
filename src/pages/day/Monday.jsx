@@ -1,55 +1,52 @@
 /**
  * External dependencies
  */
-import { useState } from "react";
-import { __ } from "@wordpress/i18n";
+import { useState, useEffect } from "react";
 import { compact } from "lodash";
 import apiFetch from "@wordpress/api-fetch";
+import { Skeleton, message, notification } from "antd";
+
 /**
  * Internal dependencies
  */
 import { formatTimeRange } from "../../utils";
 import Page from "../../components/layout/Page";
-import { fetchCategories } from "../../data";
-
-const category = await fetchCategories();
-const resources = [
-    {
-        title: "Hello Monday programs",
-        slug: "uncategories",
-        description: "Hello this is the radio program",
-        time_range: ["06:00:00", "08:00:00"],
-        cover: [
-            {
-                id: 9,
-                sizes: {
-                    thumbnail: {
-                        url: "http://wp.local/wp-content/uploads/2023/05/IMG_0748-150x150.jpg",
-                    },
-                },
-                url: "http://wp.local/wp-content/uploads/2023/05/IMG_0748.jpg",
-            },
-            {
-                id: 11,
-                sizes: {
-                    thumbnail: {
-                        url: "http://wp.local/wp-content/uploads/2023/05/fm97-youth-logo-150x150.png",
-                    },
-                },
-                url: "http://wp.local/wp-content/uploads/2023/05/fm97-youth-logo.png",
-            },
-        ],
-        category: "",
-    },
-];
-console.log(category);
-const onFinishHandler = () => {
-    return;
-};
 
 const Monday = () => {
-    console.log("test");
-    const [src, setResources] = useState(formatTimeRange(resources));
+    const [api, contextHolder] = notification.useNotification();
+    const [resources, setResources] = useState([]);
+    const [schedule, setSchedule] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    const openNotification = ({ message, description }) => {
+        api.open({
+            message,
+            description,
+        });
+    };
+
+    const onFinishHandler = async ({ resources }) => {
+        await apiFetch({
+            path: "/wp/v2/settings",
+            method: "POST",
+            parse: false,
+            data: {
+                ams_schedule: {
+                    ...schedule,
+                    monday: formatTimeRange(resources, true),
+                },
+            },
+        }).then((response) => {
+            // console.log(response, await response.json());
+            if (response.ok) {
+                openNotification({
+                    message: "Successful",
+                    description: "The records has been save successfuly.",
+                });
+            }
+        });
+    };
+
     const onFieldsChangeHandler = (e = []) => {
         try {
             const entries = e[0];
@@ -68,13 +65,34 @@ const Monday = () => {
         }
     };
 
+    const fetchData = async () => {
+        setLoading(true);
+        await apiFetch({
+            path: "/wp/v2/settings",
+        }).then((data) => {
+            setSchedule(data.ams_schedule);
+            setResources(formatTimeRange(data.ams_schedule.monday));
+            setLoading(false);
+        });
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
-        <Page
-            onFinish={onFinishHandler}
-            initialValue={src}
-            onFieldsChange={onFieldsChangeHandler}
-            src={formatTimeRange(src, true)}
-        />
+        <>
+            {contextHolder}
+            {loading && <Skeleton />}
+            {!loading && (
+                <Page
+                    onFinish={onFinishHandler}
+                    initialValue={resources}
+                    onFieldsChange={onFieldsChangeHandler}
+                    reactJson={formatTimeRange(resources, true)}
+                />
+            )}
+        </>
     );
 };
 

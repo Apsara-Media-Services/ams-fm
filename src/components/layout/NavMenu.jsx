@@ -58,7 +58,7 @@ function NavMenu() {
             nav("/day/monday");
             setCurrent("/day/monday");
         }
-    });
+    }, []);
 
     const onClick = (e) => {
         nav(e.key);
