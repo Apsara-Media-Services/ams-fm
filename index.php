@@ -247,6 +247,8 @@ final class AMS_FM {
     public function init_classes() {
         // Init necessary hooks
         new AMS\FM\User\RegisterSettings();
+        new AMS\FM\User\RegisterRootFields();
+        new AMS\FM\User\RegisterTaxonomies();
     }
 
     /**

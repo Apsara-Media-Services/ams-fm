@@ -6,7 +6,7 @@ class RegisterSettings {
 
     public function __construct() {
         
-        // add_action( 'admin_init', [ $this, 'calbackFunction' ] );
+        add_action( 'admin_init', [ $this, 'calbackFunction' ] );
         add_action( 'rest_api_init', [ $this, 'calbackFunction' ] );
     }
 

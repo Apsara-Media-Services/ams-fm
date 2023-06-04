@@ -40502,7 +40502,7 @@ function unflatten(array, parent, tree) {
 }
 const fetchCategories = async () => {
   const categories = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_0___default()({
-    path: "/wp/v2/categories"
+    path: "/wp/v2/podcasting_podcasts"
   });
   const arr = categories.map(item => {
     return {
