@@ -70,8 +70,8 @@ const Thursday = () => {
         await apiFetch({
             path: "/wp/v2/settings",
         }).then((data) => {
-            setSchedule(data.ams_schedule);
-            setResources(formatTimeRange(data.ams_schedule.thursday));
+            setSchedule(data?.ams_schedule);
+            setResources(formatTimeRange(data?.ams_schedule?.thursday));
             setLoading(false);
         });
     };
