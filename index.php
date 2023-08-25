@@ -5,7 +5,7 @@
  * Description:       AMS FM Wordpress Plugin
  * Requires at least: 5.8
  * Requires PHP:      7.4
- * Version:           0.0.1
+ * Version:           1.0.1
  * Tested upto:       6.1.1
  * Author:            Sokmean Ngon<gnonsokmean@gmail.com>
  * License:           GPL-2.0-or-later
@@ -26,7 +26,7 @@ final class AMS_FM {
      *
      * @var string
      */
-    const VERSION = '0.0.1';
+    const VERSION = '1.0.1';
 
     /**
      * Plugin slug.
