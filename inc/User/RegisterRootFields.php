@@ -11,41 +11,26 @@ class RegisterRootFields {
     }
 
     function calbackFunction() {
-        // register_graphql_object_type( 'ScheduleObject', [
-        //     'fields' => [
-        //         'monday' => [
-        //             'fields' => [
-        //                 'title', 'category'=>[],
-        //             ]
-        //         ],
-        //         'tuesday' => [
-        //             'type' => 'String'
-        //         ],
-        //         'wednesday' => [
-        //             'type' => 'String'
-        //         ],
-        //         'thursday' => [
-        //             'type' => 'String'
-        //         ],
-        //         'friday' => [
-        //             'type' => 'String'
-        //         ],
-        //         'saturday' => [
-        //             'type' => 'String'
-        //         ],
-        //         'sunday' => [
-        //             'type' => 'String'
-        //         ]
-        //     ],
-        // ]);
 
         register_graphql_field( 'RootQuery', 'getSchedule', [
             'description' => __( 'Description', 'ams' ),
             'type' => 'String',
             'resolve' => function() {
-                return serialize(get_option('ams_options'));
+                return json_decode(get_option('ams_options'));
 
             }
+        ] );
+
+        register_graphql_field( 'Podcast', 'coverImage', [
+            'description' => __( 'Cover Image', 'ams' ),
+            'type' => 'String',
+            'resolve' => function( $podcast ) {
+			 	// $media_id = get_term_meta( 27, 'podcasting_image', true );
+				$media_url = get_term_meta( 27, 'podcasting_image_url', true );
+				// $media_item = get_media_item(81,true);
+				// return json_encode($media_item);
+			  	return ! empty( $media_url ) ? $media_url : false;
+			 }
         ] );
     }
 }
