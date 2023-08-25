@@ -1,6 +1,5 @@
 /node_modules
-/vendor
 **/.vscode/
 package-lock.json
 composer.lock
-/build
+pnpm-lock.yaml
