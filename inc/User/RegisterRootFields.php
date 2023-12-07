@@ -25,12 +25,13 @@ class RegisterRootFields {
             'description' => __( 'Cover Image', 'ams' ),
             'type' => 'String',
             'resolve' => function( $podcast ) {
-			 	// $media_id = get_term_meta( 27, 'podcasting_image', true );
-				$media_url = get_term_meta( $podcast->id, 'podcasting_image_url', true );
-				// $media_item = get_media_item(81,true);
-				// return json_encode($media_item);
-			  	return ! empty( $media_url ) ? $media_url : false;
-			 }
-        ] );
+                // Assuming $podcast contains the term ID or some way to get it.
+                // Replace 'get_the_correct_term_id' with the actual logic/mechanism to retrieve the term ID.
+                $term_id = get_the_correct_term_id($podcast);
+        
+                $media_url = get_term_meta( $term_id, 'podcasting_image_url', true );
+                return ! empty( $media_url ) ? $media_url : false;
+            }
+        ]);        
     }
 }
