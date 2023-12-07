@@ -26,7 +26,7 @@ class RegisterRootFields {
             'type' => 'String',
             'resolve' => function( $podcast ) {
 			 	// $media_id = get_term_meta( 27, 'podcasting_image', true );
-				$media_url = get_term_meta( 27, 'podcasting_image_url', true );
+				$media_url = get_term_meta( $podcast->id, 'podcasting_image_url', true );
 				// $media_item = get_media_item(81,true);
 				// return json_encode($media_item);
 			  	return ! empty( $media_url ) ? $media_url : false;
