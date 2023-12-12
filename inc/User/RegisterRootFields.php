@@ -24,12 +24,8 @@ class RegisterRootFields {
         register_graphql_field( 'Podcast', 'coverImage', [
             'description' => __( 'Cover Image', 'ams' ),
             'type' => 'String',
-            'resolve' => function( $podcast ) {
-                // Assuming $podcast contains the term ID or some way to get it.
-                // Replace 'get_the_correct_term_id' with the actual logic/mechanism to retrieve the term ID.
-                $term_id = get_podcast_term_id($podcast);
-        
-                $media_url = get_term_meta( $term_id, 'podcasting_image_url', true );
+            'resolve' => function( $term ) {
+                $media_url = get_term_meta( $term->term_id, 'podcasting_image_url', true );
                 return ! empty( $media_url ) ? $media_url : false;
             }
         ]);        
