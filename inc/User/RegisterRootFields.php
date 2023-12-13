@@ -11,16 +11,19 @@ class RegisterRootFields {
     }
 
     function calbackFunction() {
-
-        register_graphql_field( 'RootQuery', 'getSchedule', [
-            'description' => __( 'Description', 'ams' ),
+        // Register Schedule Option to Graph
+        register_graphql_field('RootQuery', 'getSchedule', [
             'type' => 'String',
+            'description' => __('Description', 'ams'),
             'resolve' => function() {
-                return json_decode(get_option('ams_options'));
-
+                $option = get_option('ams_options');
+                if (is_wp_error($option) || !$option) {
+                    return null;  // Handle errors or empty values
+                }
+                return json_encode($option);  // Ensure it returns a string
             }
-        ] );
-
+        ]);
+        // Register Podcast Field to Graph
         register_graphql_field( 'Podcast', 'coverImage', [
             'description' => __( 'Cover Image', 'ams' ),
             'type' => 'String',
