@@ -1,0 +1,39 @@
+name: Release with Zip Asset
+
+on:
+  push:
+    branches: [ main ]  # Adjust branch to trigger on (e.g., "master")
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install zip library (if needed)
+        run: sudo apt-get update && sudo apt-get install -y zip  # Adjust if using a different package manager
+
+      - name: Create a zip archive
+        run: |
+          cd path/to/your/files  # Replace with the path to your files and folders
+          zip -r "${{ github.repo.repo }}_${{ github.sha }}.zip" .  # Use dynamic asset name
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.repos.owner.release_url }}/assets/{asset_id}
+          asset_path: ./"${{ github.repo.repo }}_${{ github.sha }}.zip"  # Use dynamic asset name
+          asset_name: ${{ github.repo.repo }}_${{ github.sha }}.zip  # Optional, same as asset_path
+
+      - name: Create release (optional, adjust if needed)
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.sha }}  # Or use a specific tag version
+          release_name: ${{ github.sha }} - Release  # Or provide a custom name
+          body: ${{ github.event.commit.message }}  # Include commit message
+

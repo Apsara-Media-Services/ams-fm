@@ -3,7 +3,7 @@
         'name' => 'sokmean-mptc/ams-fm',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '84343c750ecd4a8234046ac0ca7a667eb56d710c',
+        'reference' => '30f93adddd724d8705de4a6dbf79daae2ef8b4f0',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'sokmean-mptc/ams-fm' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '84343c750ecd4a8234046ac0ca7a667eb56d710c',
+            'reference' => '30f93adddd724d8705de4a6dbf79daae2ef8b4f0',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

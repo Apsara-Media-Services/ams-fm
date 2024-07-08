@@ -37,9 +37,15 @@ function unflatten(array, parent, tree) {
 }
 
 export const fetchCategories = async () => {
-    const categories = await apiFetch({ path: "/wp/v2/podcasting_podcasts" });
-    const arr = categories.map((item) => {
-        return { ...item, label: item.name, value: item.slug };
-    });
-    return unflatten(arr);
+    try {
+        const categories = await apiFetch({ path: "/wp/v2/podcasting_podcasts?per_page=100" });
+        // console.log('Fetched categories:', categories);  // Log the response
+        const arr = categories.map((item) => {
+            return { ...item, label: item.name, value: item.slug };
+        });
+        return unflatten(arr);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        return [];
+    }
 };

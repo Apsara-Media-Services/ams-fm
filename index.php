@@ -5,7 +5,7 @@
  * Description:       AMS FM Wordpress Plugin
  * Requires at least: 5.8
  * Requires PHP:      7.4
- * Version:           1.0.2
+ * Version:           1.0.3
  * Tested upto:       6.1.1
  * Author:            Sokmean Ngon<gnonsokmean@gmail.com>
  * License:           GPL-2.0-or-later
@@ -26,7 +26,7 @@ final class AMS_FM {
      *
      * @var string
      */
-    const VERSION = '1.0.2';
+    const VERSION = '1.0.3';
 
     /**
      * Plugin slug.
@@ -332,18 +332,3 @@ function ams_fm() {
  * @since 0.2.0
  */
 ams_fm();
-
-require 'plugin-update-checker-master/plugin-update-checker.php';
-use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-
-$myUpdateChecker = PucFactory::buildUpdateChecker(
-	'https://github.com/Apsara-Media-Services/ams-fm',
-	__FILE__,
-	'ams-fm'
-);
-
-//Set the branch that contains the stable release.
-$myUpdateChecker->setBranch('main');
-
-//Optional: If you're using a private repository, specify the access token like this:
-// $myUpdateChecker->setAuthentication('your-token-here');

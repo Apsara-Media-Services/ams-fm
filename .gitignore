@@ -1,5 +1,7 @@
 /node_modules
+/ams-fm
 **/.vscode/
 package-lock.json
 composer.lock
 pnpm-lock.yaml
+ams-fm.zip
